@@ -1,5 +1,5 @@
 // Reemplaza con la URL de tu Web App desplegada
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyeB_5DptUvyfTcHZ_ruGWgN5nPz7GfsweA2x-dgIths8iIDuv2s3_0Vya0Tdy07T_j/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx3lC3udxBMr4ae_2l_eatjK3NocfvCzDdAY2Q-Bmn_fb6snYdV5DtDL5sF5FSCtIuV/exec";
 let currentUser = "";
 
 async function login() {
