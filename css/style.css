@@ -63,6 +63,8 @@ input[type="text"] {
 }
 
 button.add-btn {
+    width: 100%;
+    font-size: 18px;
     background: #28a745;
     color: #fff;
     border-radius: 4px;
@@ -111,7 +113,7 @@ li.completed {
     #loginDiv { margin: 20px; padding: 15px; }
     #loginDiv input, #loginDiv button { width: 100%; font-size: 18px; }
     .task-input { flex-direction: column; }
-    input[type="text"], button.add-btn { width: 100%; font-size: 18px; }
+    input[type="text"] { width: 95%; font-size: 18px; }
     li { flex-direction: column; align-items: flex-start; gap: 10px; }
     .actions { width: 100%; display: flex; gap: 10px; }
     .actions button { flex: 1; font-size: 18px; }
