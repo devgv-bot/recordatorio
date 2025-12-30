@@ -1,84 +1,54 @@
 // Reemplaza con la URL de tu Web App desplegada
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw0uq9WcrZyaY1jzLh1wOksKxG2f5UTAi6mgLwDXKPfhbvDLQqA0SuUJiLHCPy5W__1/exec";
-
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyeB_5DptUvyfTcHZ_ruGWgN5nPz7GfsweA2x-dgIths8iIDuv2s3_0Vya0Tdy07T_j/exec";
 let currentUser = "";
 
-// LOGIN
 async function login() {
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
+  const u = username.value.trim();
+  const p = password.value.trim();
 
-  const url = `${WEB_APP_URL}?func=loginUser&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+  const r = await fetch(`${WEB_APP_URL}?func=loginUser&username=${u}&password=${p}`)
+    .then(r => r.json());
 
-  try {
-    const response = await fetch(url);
-    const result = await response.json();
-
-    if(result.success){
-      currentUser = username;
-      document.getElementById("userLabel").textContent = result.nombre;
-      document.getElementById("loginDiv").style.display = "none";
-      document.getElementById("appDiv").style.display = "block";
-      loadTasks();
-    } else {
-      document.getElementById("loginMsg").textContent = "Usuario o contraseña incorrectos";
-    }
-  } catch(err) {
-    console.error(err);
-    alert("Error al conectarse al servidor");
+  if (r.success) {
+    currentUser = u;
+    loginDiv.style.display = "none";
+    appDiv.style.display = "block";
+    loadTasks();
+  } else {
+    loginMsg.textContent = "Credenciales incorrectas";
   }
 }
 
-// CARGAR TAREAS
 async function loadTasks() {
-  const url = `${WEB_APP_URL}?func=getTasksForUser&username=${encodeURIComponent(currentUser)}`;
-  const response = await fetch(url);
-  const tasks = await response.json();
-  renderTasks(tasks);
+  render(await fetch(`${WEB_APP_URL}?func=getTasks&user=${currentUser}`).then(r=>r.json()));
 }
 
-// AGREGAR TAREA
 async function addTask() {
-  const text = document.getElementById("taskInput").value.trim();
-  if(!text) return alert("Ingrese una tarea");
-
-  const url = `${WEB_APP_URL}?func=addTaskForUser&taskText=${encodeURIComponent(text)}&username=${encodeURIComponent(currentUser)}`;
-  const response = await fetch(url);
-  const tasks = await response.json();
-  renderTasks(tasks);
-  document.getElementById("taskInput").value = "";
+  const t = taskInput.value.trim();
+  if (!t) return;
+  render(await fetch(`${WEB_APP_URL}?func=addTask&user=${currentUser}&text=${encodeURIComponent(t)}`).then(r=>r.json()));
+  taskInput.value = "";
 }
 
-// TOGGLE COMPLETADO
 async function toggleTask(id) {
-  const url = `${WEB_APP_URL}?func=toggleTaskForUser&taskId=${id}&username=${encodeURIComponent(currentUser)}`;
-  const response = await fetch(url);
-  const tasks = await response.json();
-  renderTasks(tasks);
+  render(await fetch(`${WEB_APP_URL}?func=toggleTask&user=${currentUser}&id=${id}`).then(r=>r.json()));
 }
 
-// ELIMINAR TAREA
 async function deleteTask(id) {
-  const url = `${WEB_APP_URL}?func=deleteTaskForUser&taskId=${id}&username=${encodeURIComponent(currentUser)}`;
-  const response = await fetch(url);
-  const tasks = await response.json();
-  renderTasks(tasks);
+  render(await fetch(`${WEB_APP_URL}?func=deleteTask&user=${currentUser}&id=${id}`).then(r=>r.json()));
 }
 
-// RENDERIZAR
-function renderTasks(tasks){
-  const taskList = document.getElementById("taskList");
+function render(tasks) {
   taskList.innerHTML = "";
-  tasks.forEach(task=>{
+  tasks.forEach(t => {
     const li = document.createElement("li");
-    li.className = task.completed ? "completed" : "";
+    li.className = t.completed ? "completed" : "";
     li.innerHTML = `
-      <span>${task.text}</span>
+      <span>${t.text}</span>
       <div class="actions">
-        <button class="complete-btn" onclick="toggleTask(${task.id})">✔</button>
-        <button onclick="deleteTask(${task.id})">🗑</button>
-      </div>
-    `;
+        <button class="complete-btn" onclick="toggleTask(${t.id})">✔</button>
+        <button onclick="deleteTask(${t.id})">🗑</button>
+      </div>`;
     taskList.appendChild(li);
   });
 }

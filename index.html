@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Recordatorios Web</title>
+<title>Recordatorios</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -10,22 +10,23 @@
 
 <div class="container">
 
-  <!-- LOGIN -->
   <div id="loginDiv">
-    <h2>Iniciar sesión</h2>
-    <input type="text" id="username" placeholder="Usuario"><br>
-    <input type="password" id="password" placeholder="Contraseña"><br>
+    <h2>Login</h2>
+    <input id="username" placeholder="Usuario">
+    <input id="password" type="password" placeholder="Contraseña">
     <button onclick="login()">Ingresar</button>
-    <div id="loginMsg" style="color:red; margin-top:10px;"></div>
+    <p id="loginMsg"></p>
+    <a href="register.html">Crear usuario</a>
   </div>
 
-  <!-- APP -->
   <div id="appDiv" style="display:none;">
-    <h1>Recordatorios de <span id="userLabel"></span></h1>
+    <h1>Mis tareas</h1>
+
     <div class="task-input">
-      <input type="text" id="taskInput" placeholder="Ej: Revisar correos">
+      <input id="taskInput" placeholder="Nueva tarea">
       <button class="add-btn" onclick="addTask()">Agregar</button>
     </div>
+
     <ul id="taskList"></ul>
   </div>
 
